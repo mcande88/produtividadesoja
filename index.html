@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Produtividade da Soja • Cálculo Estimativo</title>
+  <title>Soja: Produtividade & Perdas • Calculadora</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <style>
@@ -17,6 +17,7 @@
       --shadow: 0 8px 40px 0 rgba(70,160,120,0.13);
       --radius-xl: 2.3rem;
       --radius-md: 1.1rem;
+      --tab-bg: #e6ffe9;
     }
     html, body {
       height: 100%;
@@ -38,16 +39,16 @@
     .container {
       background: var(--container);
       backdrop-filter: blur(6px);
-      padding: 2.7rem 2.3rem 1.8rem 2.3rem;
+      padding: 2.3rem 2.1rem 1.5rem 2.1rem;
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
-      max-width: 430px;
-      width: 97vw;
+      max-width: 480px;
+      width: 99vw;
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1.1rem;
       margin-top: 3vw;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.3rem;
       animation: fadein 0.7s cubic-bezier(.23,1.12,.68,1.13);
     }
     @keyframes fadein {
@@ -56,7 +57,7 @@
     }
     h1 {
       font-family: 'Montserrat', Arial, sans-serif;
-      font-size: 1.62rem;
+      font-size: 1.49rem;
       font-weight: 700;
       letter-spacing: 0.01em;
       color: var(--primary-dark);
@@ -64,32 +65,71 @@
       margin: 0 0 0.1rem 0;
       line-height: 1.18;
     }
+    .tabs, .subtabs {
+      display: flex;
+      gap: 0.13rem;
+      margin: 0 auto 1.1rem auto;
+      border-radius: 1.8rem;
+      background: var(--tab-bg);
+      box-shadow: 0 1px 8px #95e0b214;
+      max-width: 380px;
+    }
+    .subtabs {
+      background: #f3fff7;
+      max-width: 350px;
+      margin-bottom: 0.9rem;
+      margin-top: 0.2rem;
+    }
+    .tab-btn, .subtab-btn {
+      flex: 1;
+      padding: 0.73rem 0.3rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.08rem;
+      background: transparent;
+      border: none;
+      border-radius: 1.8rem;
+      color: var(--primary-dark);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      outline: none;
+      margin: 0;
+    }
+    .tab-btn.active, .subtab-btn.active {
+      background: linear-gradient(90deg, var(--primary) 65%, #44e084 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px #28b14413;
+      transform: scale(1.06);
+    }
     .desc {
-      font-size: 1.06rem;
+      font-size: 1.02rem;
       color: #38895c;
       text-align: center;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.7rem;
       font-weight: 500;
+      min-height: 32px;
+      transition: color 0.25s;
     }
     label {
       display: block;
-      font-size: 1.03rem;
-      margin-bottom: 0.17rem;
+      font-size: 1.01rem;
+      margin-bottom: 0.13rem;
       font-weight: 500;
       color: var(--primary-dark);
       letter-spacing: 0.02em;
     }
     input[type=number] {
       width: 100%;
-      padding: 0.7rem 1rem;
+      padding: 0.66rem 1rem;
       border-radius: var(--radius-md);
-      border: 1.8px solid var(--border);
-      font-size: 1.09rem;
+      border: 1.7px solid var(--border);
+      font-size: 1.06rem;
       background: #f8fff7;
       font-family: inherit;
-      transition: border .22s, box-shadow .19s;
+      transition: border .19s, box-shadow .15s;
       box-sizing: border-box;
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.53rem;
     }
     input[type=number]:focus {
       border-color: var(--primary);
@@ -105,12 +145,12 @@
       flex: 1 1 100px;
       min-width: 90px;
     }
-    button {
+    button[type=submit] {
       width: 100%;
       background: linear-gradient(90deg, var(--primary) 60%, #44e084 100%);
       color: #fff;
       font-family: 'Montserrat', Arial, sans-serif;
-      font-size: 1.12rem;
+      font-size: 1.13rem;
       padding: 0.85rem 0;
       border: none;
       border-radius: 1.4rem;
@@ -122,26 +162,26 @@
       transition: background .18s, transform .13s, box-shadow .21s;
       outline: none;
     }
-    button:hover, button:focus {
+    button[type=submit]:hover, button[type=submit]:focus {
       background: linear-gradient(90deg, #28ba56 60%, #25b464 100%);
-      transform: translateY(-2px) scale(1.017);
+      transform: translateY(-2px) scale(1.018);
       box-shadow: 0 9px 25px rgba(52,199,89,0.15);
     }
     .result {
-      margin-top: 1.35rem;
+      margin-top: 1.19rem;
       text-align: center;
-      padding: 1.17rem 0.9rem 0.7rem 0.9rem;
-      border-radius: 1.2rem;
+      padding: 1.08rem 0.7rem 0.7rem 0.7rem;
+      border-radius: 1.1rem;
       background: linear-gradient(96deg, #e6ffe9 60%, #f4ffef 100%);
       box-shadow: 0 2px 18px rgba(52,199,89,0.06);
-      min-height: 62px;
-      font-size: 1.18rem;
+      min-height: 58px;
+      font-size: 1.16rem;
       font-weight: 500;
       opacity: 0;
       transform: translateY(18px);
-      transition: opacity 0.4s, transform 0.4s;
-      border: 1.3px solid #ccf5d7;
-      animation: fadein 0.7s 0.1s cubic-bezier(.23,1.12,.68,1.13) backwards;
+      transition: opacity 0.33s, transform 0.33s;
+      border: 1.2px solid #ccf5d7;
+      animation: fadein 0.8s 0.09s cubic-bezier(.23,1.12,.68,1.13) backwards;
     }
     .result.visible {
       opacity: 1;
@@ -149,90 +189,189 @@
     }
     .sacas {
       color: var(--accent);
-      font-size: 1.7rem;
+      font-size: 1.44rem;
       font-weight: 800;
       letter-spacing: 0.01em;
       text-shadow: 0 2px 6px #ff7f3f0b;
       display: block;
       margin-top: 0.1rem;
-      margin-bottom: 0.12rem;
+      margin-bottom: 0.14rem;
       font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .b {
+      font-weight: bold;
+      color: #333;
+      font-size: 1.06em;
     }
     .credit {
       margin-top: 0.5rem;
-      font-size: 0.97rem;
+      font-size: 1.01rem;
       color: #2f473b9c;
       text-align: center;
       font-family: 'Inter', Arial, sans-serif;
       opacity: 0.81;
       letter-spacing: 0.03em;
       user-select: none;
-      padding-bottom: 1.2rem;
+      padding-bottom: 1.3rem;
     }
     .credit span {
       color: var(--primary-dark);
       font-weight: 600;
       letter-spacing: 0.04em;
     }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadein 0.45s cubic-bezier(.23,1.12,.68,1.13);}
+    .subtab-content { display: none; }
+    .subtab-content.active { display: block; animation: fadein 0.38s cubic-bezier(.23,1.12,.68,1.13);}
     @media (max-width: 550px) {
       .container {
-        padding: 1.25rem 0.4rem 1.1rem 0.4rem;
-        border-radius: 1.25rem;
+        padding: 1.19rem 0.2rem 0.7rem 0.2rem;
+        border-radius: 1.15rem;
       }
-      h1 {
-        font-size: 1.12rem;
-      }
-      .desc {
-        font-size: 0.97rem;
-      }
-      .result {
-        font-size: 1.02rem;
-        padding: 0.85rem 0.25rem 0.55rem 0.25rem;
-      }
+      h1 { font-size: 1.07rem; }
+      .desc { font-size: 0.98rem; }
+      .result { font-size: 1.03rem; padding: 0.72rem 0.18rem 0.46rem 0.18rem;}
+      .tabs, .subtabs { max-width: 99vw;}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Produtividade da Soja</h1>
-    <div class="desc">
-      Calcule de forma fácil a estimativa de produtividade <br>(kg/ha e sacas/ha).
+    <h1>Calculadora de Soja</h1>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="prod">Produtividade</button>
+      <button class="tab-btn" data-tab="perda">Perda na Colheita</button>
     </div>
-    <form id="calcForm" autocomplete="off">
-      <label for="plantas">Plantas por hectare (P/ha):</label>
-      <input type="number" id="plantas" min="1" value="300000" required>
+    <div class="desc" id="desc-txt">
+      Calcule a estimativa de produtividade da lavoura (kg/ha e sacas/ha).
+    </div>
 
-      <label for="vagens">Vagens por planta (V/P):</label>
-      <input type="number" id="vagens" min="1" value="25" required>
+    <!-- PRODUTIVIDADE -->
+    <div class="tab-content active" id="prod">
+      <form id="calcProd" autocomplete="off">
+        <label for="plantas">Plantas por hectare (P/ha):</label>
+        <input type="number" id="plantas" min="1" value="300000" required>
 
-      <div class="inputs-row">
-        <div>
-          <label for="graos">Grãos por vagem (G/V):</label>
-          <input type="number" id="graos" step="0.01" min="0.5" value="2.5" required>
+        <label for="vagens">Vagens por planta (V/P):</label>
+        <input type="number" id="vagens" min="1" value="25" required>
+
+        <div class="inputs-row">
+          <div>
+            <label for="graos">Grãos por vagem (G/V):</label>
+            <input type="number" id="graos" step="0.01" min="0.5" value="2.5" required>
+          </div>
+          <div>
+            <label for="pmg">Peso de mil grãos (PMG, kg):</label>
+            <input type="number" id="pmg" step="0.001" min="0.01" value="0.160" required>
+          </div>
         </div>
-        <div>
-          <label for="pmg">Peso de mil grãos (PMG, kg):</label>
-          <input type="number" id="pmg" step="0.001" min="0.01" value="0.160" required>
-        </div>
+        <label for="saca">Peso da saca (kg):</label>
+        <input type="number" id="saca" min="1" value="60" required>
+        <button type="submit">Calcular Produtividade</button>
+      </form>
+      <div id="resultadoProd" class="result"></div>
+    </div>
+
+    <!-- PERDA -->
+    <div class="tab-content" id="perda">
+      <div class="subtabs">
+        <button class="subtab-btn active" data-subtab="perda-peso">Por Peso</button>
+        <button class="subtab-btn" data-subtab="perda-graos">Por Grãos + PMG</button>
       </div>
-      <label for="saca">Peso da saca (kg):</label>
-      <input type="number" id="saca" min="1" value="60" required>
-      <button type="submit">Calcular</button>
-    </form>
-    <div id="resultado" class="result"></div>
+      <!-- PERDA POR PESO -->
+      <div class="subtab-content active" id="perda-peso">
+        <form id="calcPerdaPeso" autocomplete="off">
+          <label>Amostragem 1 (g):</label>
+          <input type="number" id="amostra1" min="0" value="143" required>
+          <label>Amostragem 2 (g):</label>
+          <input type="number" id="amostra2" min="0" value="131" required>
+          <label>Amostragem 3 (g):</label>
+          <input type="number" id="amostra3" min="0" value="109" required>
+          <div class="inputs-row">
+            <div>
+              <label>Área amostrada (m²):</label>
+              <input type="number" id="areaAmostra" min="0.1" step="0.1" value="1" required>
+            </div>
+            <div>
+              <label>Peso da saca (kg):</label>
+              <input type="number" id="sacaPerda" min="1" value="60" required>
+            </div>
+          </div>
+          <button type="submit">Calcular Perda</button>
+        </form>
+        <div id="resultadoPerdaPeso" class="result"></div>
+      </div>
+      <!-- PERDA POR GRÃOS -->
+      <div class="subtab-content" id="perda-graos">
+        <form id="calcPerdaGraos" autocomplete="off">
+          <label>Grãos na Amostra 1:</label>
+          <input type="number" id="graosA1" min="0" value="143" required>
+          <label>Grãos na Amostra 2:</label>
+          <input type="number" id="graosA2" min="0" value="131" required>
+          <label>Grãos na Amostra 3:</label>
+          <input type="number" id="graosA3" min="0" value="109" required>
+          <div class="inputs-row">
+            <div>
+              <label>Área amostrada (m²):</label>
+              <input type="number" id="areaAmostraG" min="0.1" step="0.1" value="1" required>
+            </div>
+            <div>
+              <label>Peso de mil grãos (PMG, kg):</label>
+              <input type="number" id="pmgPerda" min="0.01" step="0.001" value="0.19" required>
+            </div>
+            <div>
+              <label>Peso da saca (kg):</label>
+              <input type="number" id="sacaPerdaG" min="1" value="60" required>
+            </div>
+          </div>
+          <button type="submit">Calcular Perda</button>
+        </form>
+        <div id="resultadoPerdaGraos" class="result"></div>
+      </div>
+    </div>
   </div>
   <div class="credit">
     Desenvolvido por <span>Murici C. Candelária</span>
   </div>
   <script>
-    const form = document.getElementById('calcForm');
-    const res = document.getElementById('resultado');
+    // Tabs
+    const tabs = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const desc = document.getElementById('desc-txt');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        tabContents.forEach(c => c.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+        // Ajusta descrição da aba
+        if(tab.dataset.tab === "prod") {
+          desc.textContent = "Calcule a estimativa de produtividade da lavoura (kg/ha e sacas/ha).";
+        } else {
+          desc.textContent = "Escolha a metodologia e calcule a perda de grãos na colheita.";
+        }
+      });
+    });
 
+    // Subtabs
+    const subtabs = document.querySelectorAll('.subtab-btn');
+    const subtabContents = document.querySelectorAll('.subtab-content');
+    subtabs.forEach(subtab => {
+      subtab.addEventListener('click', () => {
+        subtabs.forEach(t => t.classList.remove('active'));
+        subtab.classList.add('active');
+        subtabContents.forEach(c => c.classList.remove('active'));
+        document.getElementById(subtab.dataset.subtab).classList.add('active');
+      });
+    });
+
+    // Helper
     function formatNumber(n, dec=2) {
       return n.toLocaleString('pt-BR', {minimumFractionDigits: dec, maximumFractionDigits: dec});
     }
 
-    form.onsubmit = function(e) {
+    // PRODUTIVIDADE
+    document.getElementById('calcProd').onsubmit = function(e) {
       e.preventDefault();
       const plantas = Number(document.getElementById('plantas').value);
       const vagens = Number(document.getElementById('vagens').value);
@@ -244,11 +383,70 @@
       const prod_kg = (totalGraos * pmg) / 1000;
       const prod_sacas = prod_kg / saca;
 
+      const res = document.getElementById('resultadoProd');
       res.innerHTML = `
         <span>Produtividade estimada:</span><br>
         <span class="sacas">${formatNumber(prod_sacas,1)} sacas/ha</span>
         <span style="color:var(--primary-dark); font-size:1.08rem; font-weight:600;">
           ${formatNumber(prod_kg,0)} kg/ha
+        </span>
+      `;
+      res.classList.add('visible');
+    }
+
+    // PERDA POR PESO
+    document.getElementById('calcPerdaPeso').onsubmit = function(e) {
+      e.preventDefault();
+      const a1 = Number(document.getElementById('amostra1').value);
+      const a2 = Number(document.getElementById('amostra2').value);
+      const a3 = Number(document.getElementById('amostra3').value);
+      const area = Number(document.getElementById('areaAmostra').value);
+      const saca = Number(document.getElementById('sacaPerda').value);
+
+      const media_g = (a1 + a2 + a3) / 3;
+      const g_m2 = media_g / area;
+      const kg_ha = g_m2 * 10000 / 1000;
+      const sacas_ha = kg_ha / saca;
+
+      const res = document.getElementById('resultadoPerdaPeso');
+      res.innerHTML = `
+        <span>Média das amostras: <b>${formatNumber(media_g,1)} g</b></span><br>
+        <span>Perda estimada:</span><br>
+        <span class="sacas">${formatNumber(sacas_ha,2)} sacas/ha</span>
+        <span style="color:var(--primary-dark); font-size:1.05rem; font-weight:600;">
+          ${formatNumber(kg_ha,2)} kg/ha
+        </span>
+      `;
+      res.classList.add('visible');
+    }
+
+    // PERDA POR GRÃOS
+    document.getElementById('calcPerdaGraos').onsubmit = function(e) {
+      e.preventDefault();
+      const g1 = Number(document.getElementById('graosA1').value);
+      const g2 = Number(document.getElementById('graosA2').value);
+      const g3 = Number(document.getElementById('graosA3').value);
+      const area = Number(document.getElementById('areaAmostraG').value);
+      const pmg = Number(document.getElementById('pmgPerda').value);
+      const saca = Number(document.getElementById('sacaPerdaG').value);
+
+      // 1. Média dos grãos por amostra
+      const media_graos = (g1 + g2 + g3) / 3;
+      // 2. Extrapolar para grãos/ha
+      const graos_ha = media_graos * (10000 / area);
+      // 3. Peso total perdido (kg) = (graos_ha * PMG) / 1000
+      const kg_ha = (graos_ha * pmg) / 1000;
+      const sacas_ha = kg_ha / saca;
+
+      const res = document.getElementById('resultadoPerdaGraos');
+      res.innerHTML = `
+        <span>Média das amostras: <b>${formatNumber(media_graos,1)} grãos</b></span><br>
+        <span>Total de grãos perdidos: <b>${formatNumber(graos_ha,0)} grãos/ha</b></span><br>
+        <span>Peso de mil grãos (PMG): <b>${formatNumber(pmg,2)} kg</b></span><br>
+        <span>Perda estimada:</span><br>
+        <span class="sacas">${formatNumber(sacas_ha,2)} sacas/ha</span>
+        <span style="color:var(--primary-dark); font-size:1.05rem; font-weight:600;">
+          ${formatNumber(kg_ha,2)} kg/ha
         </span>
       `;
       res.classList.add('visible');
