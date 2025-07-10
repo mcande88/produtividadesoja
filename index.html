@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Produtividade da Soja • Cálculo Estimativo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #34c759;
+      --primary-dark: #228a40;
+      --background: linear-gradient(135deg, #e9ffe3 0%, #f6fcfa 100%);
+      --container: #ffffffcc;
+      --accent: #ff7f3f;
+      --text: #192a23;
+      --border: #b8efc9;
+      --shadow: 0 8px 40px 0 rgba(70,160,120,0.13);
+      --radius-xl: 2.3rem;
+      --radius-md: 1.1rem;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      width: 100vw;
+      background: var(--background);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    .container {
+      background: var(--container);
+      backdrop-filter: blur(6px);
+      padding: 2.7rem 2.3rem 1.8rem 2.3rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      max-width: 430px;
+      width: 97vw;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-top: 3vw;
+      margin-bottom: 1.2rem;
+      animation: fadein 0.7s cubic-bezier(.23,1.12,.68,1.13);
+    }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(36px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.62rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--primary-dark);
+      text-align: center;
+      margin: 0 0 0.1rem 0;
+      line-height: 1.18;
+    }
+    .desc {
+      font-size: 1.06rem;
+      color: #38895c;
+      text-align: center;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+    label {
+      display: block;
+      font-size: 1.03rem;
+      margin-bottom: 0.17rem;
+      font-weight: 500;
+      color: var(--primary-dark);
+      letter-spacing: 0.02em;
+    }
+    input[type=number] {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1.8px solid var(--border);
+      font-size: 1.09rem;
+      background: #f8fff7;
+      font-family: inherit;
+      transition: border .22s, box-shadow .19s;
+      box-sizing: border-box;
+      margin-bottom: 0.7rem;
+    }
+    input[type=number]:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 2px #a9ffb6a9;
+    }
+    .inputs-row {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .inputs-row > div {
+      flex: 1 1 100px;
+      min-width: 90px;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary) 60%, #44e084 100%);
+      color: #fff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.12rem;
+      padding: 0.85rem 0;
+      border: none;
+      border-radius: 1.4rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(52,199,89,0.11);
+      margin-top: 0.2rem;
+      letter-spacing: 0.02em;
+      transition: background .18s, transform .13s, box-shadow .21s;
+      outline: none;
+    }
+    button:hover, button:focus {
+      background: linear-gradient(90deg, #28ba56 60%, #25b464 100%);
+      transform: translateY(-2px) scale(1.017);
+      box-shadow: 0 9px 25px rgba(52,199,89,0.15);
+    }
+    .result {
+      margin-top: 1.35rem;
+      text-align: center;
+      padding: 1.17rem 0.9rem 0.7rem 0.9rem;
+      border-radius: 1.2rem;
+      background: linear-gradient(96deg, #e6ffe9 60%, #f4ffef 100%);
+      box-shadow: 0 2px 18px rgba(52,199,89,0.06);
+      min-height: 62px;
+      font-size: 1.18rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.4s, transform 0.4s;
+      border: 1.3px solid #ccf5d7;
+      animation: fadein 0.7s 0.1s cubic-bezier(.23,1.12,.68,1.13) backwards;
+    }
+    .result.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .sacas {
+      color: var(--accent);
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 6px #ff7f3f0b;
+      display: block;
+      margin-top: 0.1rem;
+      margin-bottom: 0.12rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .credit {
+      margin-top: 0.5rem;
+      font-size: 0.97rem;
+      color: #2f473b9c;
+      text-align: center;
+      font-family: 'Inter', Arial, sans-serif;
+      opacity: 0.81;
+      letter-spacing: 0.03em;
+      user-select: none;
+      padding-bottom: 1.2rem;
+    }
+    .credit span {
+      color: var(--primary-dark);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    @media (max-width: 550px) {
+      .container {
+        padding: 1.25rem 0.4rem 1.1rem 0.4rem;
+        border-radius: 1.25rem;
+      }
+      h1 {
+        font-size: 1.12rem;
+      }
+      .desc {
+        font-size: 0.97rem;
+      }
+      .result {
+        font-size: 1.02rem;
+        padding: 0.85rem 0.25rem 0.55rem 0.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Produtividade da Soja</h1>
+    <div class="desc">
+      Calcule de forma fácil a estimativa de produtividade <br>(kg/ha e sacas/ha).
+    </div>
+    <form id="calcForm" autocomplete="off">
+      <label for="plantas">Plantas por hectare (P/ha):</label>
+      <input type="number" id="plantas" min="1" value="300000" required>
+
+      <label for="vagens">Vagens por planta (V/P):</label>
+      <input type="number" id="vagens" min="1" value="25" required>
+
+      <div class="inputs-row">
+        <div>
+          <label for="graos">Grãos por vagem (G/V):</label>
+          <input type="number" id="graos" step="0.01" min="0.5" value="2.5" required>
+        </div>
+        <div>
+          <label for="pmg">Peso de mil grãos (PMG, kg):</label>
+          <input type="number" id="pmg" step="0.001" min="0.01" value="0.160" required>
+        </div>
+      </div>
+      <label for="saca">Peso da saca (kg):</label>
+      <input type="number" id="saca" min="1" value="60" required>
+      <button type="submit">Calcular</button>
+    </form>
+    <div id="resultado" class="result"></div>
+  </div>
+  <div class="credit">
+    Desenvolvido por <span>Murici C. Candelária</span>
+  </div>
+  <script>
+    const form = document.getElementById('calcForm');
+    const res = document.getElementById('resultado');
+
+    function formatNumber(n, dec=2) {
+      return n.toLocaleString('pt-BR', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+    }
+
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      const plantas = Number(document.getElementById('plantas').value);
+      const vagens = Number(document.getElementById('vagens').value);
+      const graos = Number(document.getElementById('graos').value);
+      const pmg = Number(document.getElementById('pmg').value);
+      const saca = Number(document.getElementById('saca').value);
+
+      const totalGraos = plantas * vagens * graos;
+      const prod_kg = (totalGraos * pmg) / 1000;
+      const prod_sacas = prod_kg / saca;
+
+      res.innerHTML = `
+        <span>Produtividade estimada:</span><br>
+        <span class="sacas">${formatNumber(prod_sacas,1)} sacas/ha</span>
+        <span style="color:var(--primary-dark); font-size:1.08rem; font-weight:600;">
+          ${formatNumber(prod_kg,0)} kg/ha
+        </span>
+      `;
+      res.classList.add('visible');
+    }
+  </script>
+</body>
+</html>
